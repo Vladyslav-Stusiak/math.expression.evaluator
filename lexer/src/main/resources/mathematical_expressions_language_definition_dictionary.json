@@ -1,0 +1,13 @@
+{
+  "formalLanguageName": "Mathematical Expression",
+  "lexemes": [
+    {
+      "type": "OPERATOR",
+      "regex": "[-+]"
+    },
+    {
+      "type": "NUMBER",
+      "regex": "[0-9]+"
+    }
+  ]
+}

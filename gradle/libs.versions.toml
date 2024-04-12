@@ -1,0 +1,12 @@
+[versions]
+junit = "5.10.0"
+asserj = "3.25.3"
+mockito = "5.11.0"
+jackson = "2.17.0"
+
+[libraries]
+junit = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junit" }
+asserj = { module = "org.assertj:assertj-core", version.ref = "asserj" }
+mockito = { module = "org.mockito:mockito-core", version.ref = "mockito" }
+mockito-junit = { module = "org.mockito:mockito-junit-jupiter", version.ref = "mockito" }
+jackson-databind = { module = "com.fasterxml.jackson.core:jackson-databind", version.ref = "jackson" }

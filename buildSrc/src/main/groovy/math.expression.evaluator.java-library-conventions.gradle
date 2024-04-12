@@ -1,0 +1,4 @@
+plugins {
+    id 'math.expression.evaluator.java-common-conventions'
+    id 'java-library'
+}
