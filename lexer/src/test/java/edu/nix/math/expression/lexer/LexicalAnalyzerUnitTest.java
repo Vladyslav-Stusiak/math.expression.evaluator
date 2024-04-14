@@ -2,11 +2,9 @@ package edu.nix.math.expression.lexer;
 
 
 import edu.nix.math.expression.lexer.configuration.LanguageConfiguration;
-import edu.nix.math.expression.lexer.domain.Expression;
-import edu.nix.math.expression.lexer.domain.Token;
-import edu.nix.math.expression.lexer.domain.TokenType;
-import edu.nix.math.expression.lexer.domain.TypeAwareToken;
+import edu.nix.math.expression.lexer.domain.*;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -18,6 +16,7 @@ import java.io.IOException;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.when;
 
 @ExtendWith({MockitoExtension.class})
@@ -50,13 +49,28 @@ class LexicalAnalyzerUnitTest {
 				.containsExactly(tokens);
 	}
 
+	public @Test void assureExceptionIsThrownOnUnexpectedToken() {
+		when(mockExpression.expression())
+				.thenReturn("a_b+c");
+		assertThatThrownBy(() -> lexicalAnalyzer.tokenize(mockExpression))
+				.isInstanceOf(LexicalAnalysisException.class)
+				.message()
+				.startsWith("Unexpected character: ");
+	}
+
 	private static Stream<Arguments> provideExpressionsWithExpectedTokens() {
 		return Stream.of(Arguments.of("1+2", new Token[]{
-						new TypeAwareToken(TokenType.NUMBER), new TypeAwareToken(TokenType.OPERATOR),
-						new TypeAwareToken(TokenType.NUMBER)}),
+						new TypeAwareToken(TokenType.NUMBER, "1"), new TypeAwareToken(TokenType.OPERATOR_PLUS, "+"),
+						new TypeAwareToken(TokenType.NUMBER, "2")}),
 				Arguments.of("1+2+3", new Token[]{
-						new TypeAwareToken(TokenType.NUMBER), new TypeAwareToken(TokenType.OPERATOR),
-						new TypeAwareToken(TokenType.NUMBER), new TypeAwareToken(TokenType.OPERATOR),
-						new TypeAwareToken(TokenType.NUMBER)}));
+						new TypeAwareToken(TokenType.NUMBER, "1"), new TypeAwareToken(TokenType.OPERATOR_PLUS, "+"),
+						new TypeAwareToken(TokenType.NUMBER, "2"), new TypeAwareToken(TokenType.OPERATOR_PLUS, "+"),
+						new TypeAwareToken(TokenType.NUMBER, "3")}),
+				Arguments.of("(2+3)", new Token[]{
+						new TypeAwareToken(TokenType.OPEN_PARENTHESIS, "("),
+						new TypeAwareToken(TokenType.NUMBER, "2"),
+						new TypeAwareToken(TokenType.OPERATOR_PLUS, "+"),
+						new TypeAwareToken(TokenType.NUMBER, "3"),
+						new TypeAwareToken(TokenType.CLOSE_PARENTHESIS, ")")}));
 	}
 }

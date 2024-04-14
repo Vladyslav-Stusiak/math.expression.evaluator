@@ -2,6 +2,7 @@ package edu.nix.math.expression.lexer;
 
 import edu.nix.math.expression.lexer.configuration.LanguageConfiguration;
 import edu.nix.math.expression.lexer.domain.Expression;
+import edu.nix.math.expression.lexer.domain.LexicalAnalysisException;
 import edu.nix.math.expression.lexer.domain.Token;
 import edu.nix.math.expression.lexer.domain.TypeAwareToken;
 
@@ -16,8 +17,8 @@ public final class DefaultLexicalAnalyzer implements LexicalAnalyzer {
 		this.tokenMapper = (character) -> stream(languageConfiguration.lexemes())
 				.filter(lexeme -> lexeme.regex().asPredicate().test(String.valueOf(character)))
 				.findFirst()
-				.map(lexeme -> new TypeAwareToken(lexeme.type()))
-				.orElseThrow();
+				.map(lexeme -> new TypeAwareToken(lexeme.type(), String.valueOf(character)))
+				.orElseThrow(() -> new LexicalAnalysisException("Unexpected character: " + character));
 	}
 
 	@Override

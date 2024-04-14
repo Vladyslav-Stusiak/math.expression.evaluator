@@ -2,12 +2,24 @@
   "formalLanguageName": "Mathematical Expression",
   "lexemes": [
     {
-      "type": "OPERATOR",
-      "regex": "[-+]"
-    },
-    {
       "type": "NUMBER",
       "regex": "[0-9]+"
+    },
+    {
+      "type": "OPEN_PARENTHESIS",
+      "regex": "[\\(]"
+    },
+    {
+      "type": "CLOSE_PARENTHESIS",
+      "regex": "[\\)]"
+    },
+    {
+      "type": "OPERATOR_PLUS",
+      "regex": "[\\+]"
+    },
+    {
+      "type": "OPERATOR_MINUS",
+      "regex": "[\\-]"
     }
   ]
 }
