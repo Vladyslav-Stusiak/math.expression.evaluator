@@ -15,11 +15,11 @@
     },
     {
       "type": "OPERATOR_PLUS",
-      "regex": "[\\+]"
+      "regex": "[+]"
     },
     {
       "type": "OPERATOR_MINUS",
-      "regex": "[\\-]"
+      "regex": "[-]"
     }
   ]
 }

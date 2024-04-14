@@ -55,7 +55,7 @@ class LexicalAnalyzerUnitTest {
 		assertThatThrownBy(() -> lexicalAnalyzer.tokenize(mockExpression))
 				.isInstanceOf(LexicalAnalysisException.class)
 				.message()
-				.startsWith("Unexpected character: ");
+				.startsWith("Unexpected token: ");
 	}
 
 	private static Stream<Arguments> provideExpressionsWithExpectedTokens() {
