@@ -60,17 +60,20 @@ class LexicalAnalyzerUnitTest {
 
 	private static Stream<Arguments> provideExpressionsWithExpectedTokens() {
 		return Stream.of(Arguments.of("1+2", new Token[]{
-						new TypeAwareToken(TokenType.NUMBER, "1"), new TypeAwareToken(TokenType.OPERATOR_PLUS, "+"),
-						new TypeAwareToken(TokenType.NUMBER, "2")}),
+						new TypeAwareToken(TokenType.NUMBER, "1", Associativity.NONE, Precedence.of(0)),
+						new TypeAwareToken(TokenType.OPERATOR_PLUS, "+", Associativity.LEFT, Precedence.of(5)),
+						new TypeAwareToken(TokenType.NUMBER, "2", Associativity.NONE, Precedence.of(0))}),
 				Arguments.of("1+2+3", new Token[]{
-						new TypeAwareToken(TokenType.NUMBER, "1"), new TypeAwareToken(TokenType.OPERATOR_PLUS, "+"),
-						new TypeAwareToken(TokenType.NUMBER, "2"), new TypeAwareToken(TokenType.OPERATOR_PLUS, "+"),
-						new TypeAwareToken(TokenType.NUMBER, "3")}),
+						new TypeAwareToken(TokenType.NUMBER, "1", Associativity.NONE, Precedence.of(0)),
+						new TypeAwareToken(TokenType.OPERATOR_PLUS, "+", Associativity.LEFT, Precedence.of(5)),
+						new TypeAwareToken(TokenType.NUMBER, "2", Associativity.NONE, Precedence.of(0)),
+						new TypeAwareToken(TokenType.OPERATOR_PLUS, "+", Associativity.LEFT, Precedence.of(5)),
+						new TypeAwareToken(TokenType.NUMBER, "3", Associativity.NONE, Precedence.of(0))}),
 				Arguments.of("(2+3)", new Token[]{
-						new TypeAwareToken(TokenType.OPEN_PARENTHESIS, "("),
-						new TypeAwareToken(TokenType.NUMBER, "2"),
-						new TypeAwareToken(TokenType.OPERATOR_PLUS, "+"),
-						new TypeAwareToken(TokenType.NUMBER, "3"),
-						new TypeAwareToken(TokenType.CLOSE_PARENTHESIS, ")")}));
+						new TypeAwareToken(TokenType.OPEN_PARENTHESIS, "(", Associativity.LEFT, Precedence.of(15)),
+						new TypeAwareToken(TokenType.NUMBER, "2", Associativity.NONE, Precedence.of(0)),
+						new TypeAwareToken(TokenType.OPERATOR_PLUS, "+", Associativity.LEFT, Precedence.of(5)),
+						new TypeAwareToken(TokenType.NUMBER, "3", Associativity.NONE, Precedence.of(0)),
+						new TypeAwareToken(TokenType.CLOSE_PARENTHESIS, ")", Associativity.LEFT, Precedence.of(15))}));
 	}
 }

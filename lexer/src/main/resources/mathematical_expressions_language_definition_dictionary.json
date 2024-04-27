@@ -3,23 +3,45 @@
   "lexemes": [
     {
       "type": "NUMBER",
-      "regex": "[0-9]+"
+      "regex": "[0-9]+",
+      "associativity": "NONE",
+      "precedence": 0
     },
     {
       "type": "OPEN_PARENTHESIS",
-      "regex": "[\\(]"
+      "regex": "[\\(]",
+      "associativity": "LEFT",
+      "precedence": 15
     },
     {
       "type": "CLOSE_PARENTHESIS",
-      "regex": "[\\)]"
+      "regex": "[\\)]",
+      "associativity": "LEFT",
+      "precedence": 15
     },
     {
       "type": "OPERATOR_PLUS",
-      "regex": "[+]"
+      "regex": "[+]",
+      "associativity": "LEFT",
+      "precedence": 5
     },
     {
       "type": "OPERATOR_MINUS",
-      "regex": "[-]"
+      "regex": "[-]",
+      "associativity": "LEFT",
+      "precedence": 5
+    },
+    {
+      "type": "OPERATOR_MULTIPLY",
+      "regex": "[-]",
+      "associativity": "LEFT",
+      "precedence": 10
+    },
+    {
+      "type": "OPERATOR_DIVIDE",
+      "regex": "[-]",
+      "associativity": "LEFT",
+      "precedence": 10
     }
   ]
 }

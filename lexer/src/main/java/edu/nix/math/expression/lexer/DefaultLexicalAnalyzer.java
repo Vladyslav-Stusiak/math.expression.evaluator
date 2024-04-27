@@ -18,7 +18,7 @@ public final class DefaultLexicalAnalyzer implements LexicalAnalyzer {
 		this.tokenMapper = (token) -> stream(languageConfiguration.lexemes())
 				.filter(lexeme -> lexeme.regex().asPredicate().test(token))
 				.findFirst()
-				.map(lexeme -> new TypeAwareToken(lexeme.type(), token))
+				.map(lexeme -> new TypeAwareToken(lexeme.type(), token, lexeme.associativity(), lexeme.precedence()))
 				.orElseThrow(() -> new LexicalAnalysisException("Unexpected token: " + token));
 	}
 
