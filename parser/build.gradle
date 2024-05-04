@@ -1,0 +1,11 @@
+plugins {
+    id 'math.expression.evaluator.java-library-conventions'
+}
+
+group = 'edu.nix'
+version = 'unspecified'
+
+dependencies {
+    implementation project(':lexer')
+    implementation libs.bundles.logging
+}

@@ -33,13 +33,13 @@
     },
     {
       "type": "OPERATOR_MULTIPLY",
-      "regex": "[-]",
+      "regex": "[*]",
       "associativity": "LEFT",
       "precedence": 10
     },
     {
       "type": "OPERATOR_DIVIDE",
-      "regex": "[-]",
+      "regex": "[/]",
       "associativity": "LEFT",
       "precedence": 10
     }

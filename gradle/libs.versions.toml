@@ -3,6 +3,8 @@ junit = "5.10.0"
 asserj = "3.25.3"
 mockito = "5.11.0"
 jackson = "2.17.0"
+logback-classic = "1.3.5"
+slf4j-api = "2.0.4"
 
 [libraries]
 junit = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junit" }
@@ -10,3 +12,9 @@ asserj = { module = "org.assertj:assertj-core", version.ref = "asserj" }
 mockito = { module = "org.mockito:mockito-core", version.ref = "mockito" }
 mockito-junit = { module = "org.mockito:mockito-junit-jupiter", version.ref = "mockito" }
 jackson-databind = { module = "com.fasterxml.jackson.core:jackson-databind", version.ref = "jackson" }
+slf4j-api = { module = "org.slf4j:slf4j-api", version.ref = "slf4j-api" }
+logback-core = { module = "ch.qos.logback:logback-core", version.ref = "logback-classic" }
+logback-classic = { module = "ch.qos.logback:logback-classic", version.ref = "logback-classic" }
+
+[bundles]
+logging = ["logback-core", "logback-classic", "slf4j-api"]
