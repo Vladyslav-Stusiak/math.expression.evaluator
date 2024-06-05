@@ -3,7 +3,7 @@ plugins {
 }
 
 group = 'edu.nix'
-version = 'unspecified'
+version = '0.0.1'
 
 dependencies {
     implementation libs.jackson.databind

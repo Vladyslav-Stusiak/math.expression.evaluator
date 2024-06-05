@@ -3,5 +3,5 @@ plugins {
 }
 
 rootProject.name = 'math.expression.evaluator'
-include('lexer', 'parser')
+include('lexer', 'parser', 'translator')
 

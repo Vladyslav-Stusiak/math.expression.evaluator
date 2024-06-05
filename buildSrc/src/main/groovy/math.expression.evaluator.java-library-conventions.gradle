@@ -1,4 +1,13 @@
 plugins {
     id 'math.expression.evaluator.java-common-conventions'
     id 'java-library'
+    id 'maven-publish'
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            from components.java
+        }
+    }
 }

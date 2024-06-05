@@ -7,5 +7,6 @@ version = '0.0.1'
 
 dependencies {
     implementation project(':lexer')
+    implementation project(':parser')
     implementation libs.bundles.logging
 }
