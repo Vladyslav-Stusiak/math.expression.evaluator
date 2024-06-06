@@ -60,6 +60,10 @@ public record SyntaxTreeImplementation(Node root) implements SyntaxTree {
 					", right=" + right +
 					'}';
 		}
+
+		public static Node of(final Token token) {
+			return new NodeImplementation(token);
+		}
 	}
 
 	@Override

@@ -8,25 +8,25 @@ public class DepthFirstTranslator implements Translator {
 	private static final Logger LOGGER = LoggerFactory.getLogger(Translator.class);
 
 	@Override
-	public long translate(final SyntaxTree syntaxTree) {
+	public double translate(final SyntaxTree syntaxTree) {
 		LOGGER.debug("Translating syntax tree: {}", syntaxTree);
 		return evaluateTree(syntaxTree);
 	}
 
-	private static long evaluateTree(final SyntaxTree tree) {
+	private static double evaluateTree(final SyntaxTree tree) {
 		return visitNodes(tree);
 	}
 
-	private static long visitNodes(final SyntaxTree tree) {
+	private static double visitNodes(final SyntaxTree tree) {
 		final var root = tree.getRoot();
 		return visitNode(root);
 	}
 
-	private static long visitNode(final SyntaxTree.Node node) {
+	private static double visitNode(final SyntaxTree.Node node) {
 		final var leftNode = node.getLeft();
 		final var rightNode = node.getRight();
 
-		long leftEvaluation = 0, rightEvaluation = 0;
+		double leftEvaluation = 0, rightEvaluation = 0;
 
 		if (leftNode.isPresent()) {
 			leftEvaluation += visitNode(leftNode.get());
@@ -39,12 +39,11 @@ public class DepthFirstTranslator implements Translator {
 		LOGGER.debug("Visiting node: {}, with token {}", node, node.getToken());
 
 		return switch (node.getToken().getType()) {
-			case NUMBER -> Long.parseLong(node.getToken().getRawValue());
-			case OPERATOR_PLUS -> leftEvaluation + rightEvaluation;
+			case NUMBER -> Double.parseDouble(node.getToken().getRawValue());
+			case OPERATOR_PLUS, UNKNOWN -> leftEvaluation + rightEvaluation;
 			case OPERATOR_MINUS -> leftEvaluation - rightEvaluation;
 			case OPERATOR_MULTIPLY -> leftEvaluation * rightEvaluation;
 			case OPERATOR_DIVIDE -> leftEvaluation / rightEvaluation;
-			case UNKNOWN -> leftEvaluation + rightEvaluation;
 			default -> throw new IllegalStateException("Unexpected value: " + node.getToken().getType());
 		};
 	}

@@ -6,52 +6,44 @@ import edu.nix.math.expression.lexer.domain.TokenType;
 import edu.nix.math.expression.parser.domain.SyntaxTree;
 import edu.nix.math.expression.parser.domain.SyntaxTreeImplementation;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Stack;
+import java.util.ArrayDeque;
+import java.util.Deque;
 
 
 public final class ShuntingYardSyntaxAnalyzer implements SyntaxAnalyzer {
-	private final Stack<Token> operatorStack;
-	private final List<SyntaxTree.Node> outputQueue;
-
-	public ShuntingYardSyntaxAnalyzer() {
-		this.operatorStack = new Stack<>();
-		this.outputQueue = new ArrayList<>();
-	}
-
 	@Override
-	public SyntaxTree analyze(Token... tokens) {
+	public SyntaxTree analyze(final Token... tokens) {
+		final var operatorStack = new ArrayDeque<Token>();
+		final var outputStack = new ArrayDeque<SyntaxTree.Node>();
+
 		for (Token token : tokens) {
 			switch (token.getType()) {
-				case NUMBER -> outputQueue.add(createNode(token));
-				case OPERATOR_PLUS, OPERATOR_MINUS, OPERATOR_MULTIPLY, OPERATOR_DIVIDE -> handleOperator(token);
+				case NUMBER -> outputStack.offer(SyntaxTreeImplementation.NodeImplementation.of(token));
+				case OPERATOR_PLUS, OPERATOR_MINUS, OPERATOR_MULTIPLY, OPERATOR_DIVIDE ->
+						handleOperator(token, operatorStack, outputStack);
 				case OPEN_PARENTHESIS -> operatorStack.push(token);
-				case CLOSE_PARENTHESIS -> processOperatorsUntilLeftParen();
+				case CLOSE_PARENTHESIS -> processOperatorsUntilLeftParentheses(operatorStack, outputStack);
 			}
 		}
-		processRemainingOperators();
 
-		if (outputQueue.size() != 1) {
+		processRemainingOperators(operatorStack, outputStack);
+
+		if (outputStack.size() != 1) {
 			throw new IllegalArgumentException("Invalid expression");
 		}
 
-		return new SyntaxTreeImplementation(outputQueue.get(0));
+		return new SyntaxTreeImplementation(outputStack.poll());
 	}
 
-	private SyntaxTree.Node createNode(Token token) {
-		return new SyntaxTreeImplementation.NodeImplementation(token);
-	}
-
-	private void handleOperator(Token operator) {
+	private void handleOperator(final Token operator, final Deque<Token> operatorStack, final Deque<SyntaxTree.Node> outputQueue) {
 		while (!operatorStack.isEmpty() &&
-				canApplyOperator(operatorStack.peek(), operator)) {
-			processOperator(operatorStack.pop());
+				canProcessOperator(operatorStack.peek(), operator)) {
+			processOperator(operatorStack.pop(), outputQueue);
 		}
 		operatorStack.push(operator);
 	}
 
-	private boolean canApplyOperator(Token top, Token current) {
+	private boolean canProcessOperator(final Token top, final Token current) {
 		if (top.getType() == TokenType.OPEN_PARENTHESIS) {
 			return false;
 		}
@@ -61,27 +53,27 @@ public final class ShuntingYardSyntaxAnalyzer implements SyntaxAnalyzer {
 						top.getPrecedence().value() > current.getPrecedence().value());
 	}
 
-	private void processOperator(Token operator) {
-		SyntaxTree.Node right = outputQueue.remove(outputQueue.size() - 1);
-		SyntaxTree.Node left = outputQueue.remove(outputQueue.size() - 1);
+	private void processOperator(final Token operator, final Deque<SyntaxTree.Node> outputQueue) {
+		SyntaxTree.Node right = outputQueue.pollLast();
+		SyntaxTree.Node left = outputQueue.pollLast();
 
-		SyntaxTree.Node node = createNode(operator);
+		SyntaxTree.Node node = SyntaxTreeImplementation.NodeImplementation.of(operator);
 		node.setLeft(left);
 		node.setRight(right);
 
 		outputQueue.add(node);
 	}
 
-	private void processOperatorsUntilLeftParen() {
+	private void processOperatorsUntilLeftParentheses(final Deque<Token> operatorStack, final Deque<SyntaxTree.Node> outputQueue) {
 		while (!operatorStack.isEmpty() && operatorStack.peek().getType() != TokenType.OPEN_PARENTHESIS) {
-			processOperator(operatorStack.pop());
+			processOperator(operatorStack.pop(), outputQueue);
 		}
-		operatorStack.pop(); // Remove the left parenthesis
+		operatorStack.pop();
 	}
 
-	private void processRemainingOperators() {
+	private void processRemainingOperators(final Deque<Token> operatorStack, final Deque<SyntaxTree.Node> outputQueue) {
 		while (!operatorStack.isEmpty()) {
-			processOperator(operatorStack.pop());
+			processOperator(operatorStack.pop(), outputQueue);
 		}
 	}
 }
