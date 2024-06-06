@@ -1,5 +1,6 @@
 package edu.nix.api;
 
+import edu.nix.dto.EvaluationRequest;
 import edu.nix.dto.EvaluationResult;
 import edu.nix.service.EvaluationService;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,7 +15,7 @@ public class EvaluationRestControllerImplementation
 	}
 
 	@Override
-	public EvaluationResult evaluate(final String expression) {
-		return new EvaluationResult(evaluationService.evaluate(expression));
+	public EvaluationResult evaluate(final EvaluationRequest request) {
+		return new EvaluationResult(evaluationService.evaluate(request.expression()));
 	}
 }
