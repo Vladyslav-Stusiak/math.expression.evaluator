@@ -2,7 +2,7 @@
 
 ## Overview
 
-Simple parser written to do some algorithmic parser.
+Simple parser written to do some algorithmic practice.
 
 Consists of three modules:
 
