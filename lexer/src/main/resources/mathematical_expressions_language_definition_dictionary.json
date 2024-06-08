@@ -3,7 +3,7 @@
   "lexemes": [
     {
       "type": "NUMBER",
-      "regex": "[0-9]+",
+      "regex": "[\\d]+",
       "associativity": "NONE",
       "precedence": 0
     },
@@ -39,7 +39,7 @@
     },
     {
       "type": "OPERATOR_DIVIDE",
-      "regex": "[/]",
+      "regex": "[\\/]",
       "associativity": "LEFT",
       "precedence": 10
     }
