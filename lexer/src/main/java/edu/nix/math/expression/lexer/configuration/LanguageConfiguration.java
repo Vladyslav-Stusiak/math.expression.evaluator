@@ -13,9 +13,9 @@ import java.io.InputStream;
 import java.util.regex.Pattern;
 
 public record LanguageConfiguration(String formalLanguageName, Lexeme[] lexemes) {
-	public record Lexeme(TokenType type, Pattern regex, Associativity associativity, Precedence precedence) {
+	public record Lexeme(TokenType type, String regex, Associativity associativity, Precedence precedence) {
 		public static @JsonCreator Lexeme of(final @JsonProperty("type") String rawType,
-		                                     final @JsonProperty("regex") Pattern regex,
+		                                     final @JsonProperty("regex") String regex,
 		                                     final @JsonProperty("associativity") Associativity associativity,
 		                                     final @JsonProperty("precedence") Precedence precedence) {
 			TokenType type;
